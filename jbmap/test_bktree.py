@@ -43,7 +43,7 @@ class TestEuclidian(TestMetric):
         self.assertTriangleInequality(bktree.euclidian, a, b, c)
 
 
-class TestLevenshtein(unittest.TestCase):
+class TestLevenshtein(TestMetric):
 
     def test_identity(self):
         self.assertEqual(bktree.levenshtein('kitten', 'kitten'), 0)
@@ -53,6 +53,19 @@ class TestLevenshtein(unittest.TestCase):
         self.assertEqual(bktree.levenshtein('kitten', 'kittens'), 1)
         self.assertEqual(bktree.levenshtein('cat', 'catch'), 2)
         self.assertEqual(bktree.levenshtein('finding', 'fin'), 4)
+
+    def test_nothing_in_common(self):
+        self.assertEqual(bktree.levenshtein('', 'foobarbaz'), 9)
+
+    def test_wikipedia_examples(self):
+        self.assertEqual(bktree.levenshtein('kitten', 'sitting'), 3)
+        self.assertEqual(bktree.levenshtein('Sunday', 'Saturday'), 3)
+
+    def test_triangle_inequality(self):
+        a = 'kitten'
+        b = 'mitten'
+        c = 'sitting'
+        self.assertTriangleInequality(bktree.levenshtein, a, b, c)
 
 
 if __name__ == '__main__':
