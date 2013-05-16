@@ -131,37 +131,6 @@ class BKTree(object):
             length += len(leaf)
         return length
 
-    def walk_preorder(self):
-        """Return an iterator to traverse the tree in depth-first, pre-order.
-        """
-        yield self.value
-        for value in self.leaves.values():
-            # NOTE if support for Python >3.3 is dropped, yield from can be
-            # used
-            #yield from value.walk_preorder()
-            for leaf_value in value.walk_preorder():
-                yield leaf_value
-
-    def walk_postorder(self):
-        """Returns an iterator to traverse the tree in depth-first, post-order.
-        """
-        for value in self.leaves.values():
-            # NOTE Again, yield from in Python 3.3
-            #yield from value.walk_postorder()
-            for leaf_value in value.walk_postorder():
-                yield leaf_value
-
-    def walk_breadth(self):
-        """Returns an iterator to traverse the tree in breadth-first order.
-        """
-        queue = deque(self)
-        while len(queue) > 0:
-            node = queue.popleft()
-            yield node
-            queue.append(node.leaves.values())
-
-    __iter__ = walk_preorder
-
     def add(self, value):
         """Add a value to the Tree.
 
@@ -198,4 +167,37 @@ class BKTree(object):
             # yield from self.leaves[key].search(query, max_distance)
             for result in self.leaves[key].search(query, max_distance):
                 yield result
+
+    def walk_breadth(self):
+        """Returns an iterator to traverse the tree in breadth-first order.
+        """
+        queue = deque(self)
+        while len(queue) > 0:
+            node = queue.popleft()
+            yield node
+            queue.append(node.leaves.values())
+
+    def walk_postorder(self):
+        """Returns an iterator to traverse the tree in depth-first, post-order.
+        """
+        for value in self.leaves.values():
+            # NOTE Again, yield from in Python 3.3
+            #yield from value.walk_postorder()
+            for leaf_value in value.walk_postorder():
+                yield leaf_value
+
+    def walk_preorder(self):
+        """Return an iterator to traverse the tree in depth-first, pre-order.
+
+        This is equivalen to calling iter(tree)
+        """
+        yield self.value
+        for value in self.leaves.values():
+            # NOTE if support for Python >3.3 is dropped, yield from can be
+            # used
+            #yield from value.walk_preorder()
+            for leaf_value in value.walk_preorder():
+                yield leaf_value
+
+    __iter__ = self.walk_preorder
 
