@@ -36,4 +36,7 @@ class Graph(object):
     vertices is a set of Vertex objects.
     """
     def __init__(self, vertices=None):
-        pass
+        if vertices:
+            self.vertices = vertices
+        else:
+            self.vertices = set()
