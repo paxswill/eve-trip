@@ -201,8 +201,8 @@ class BKTree(object):
                 if not self.leaves[distance]:
                     del self.leaves[distance]
             else:
-                raise KeyError("'{}' is not contained within the
-                        tree.".format(value))
+                raise KeyError("'{}' is not contained within the tree.".
+                        format(value))
 
     def search(self, query, max_distance):
         """Returns an iterator of matching items.
@@ -254,5 +254,5 @@ class BKTree(object):
             for leaf_value in value.walk_preorder():
                 yield leaf_value
 
-    __iter__ = self.walk_preorder
+    __iter__ = walk_preorder
 
