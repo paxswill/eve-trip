@@ -65,7 +65,8 @@ def levenshtein(p, q):
 
 
 class BKTree(object):
-    def __init__(self, metric, initial=None):
+
+    def __init__(self, metric, *args):
         """Create a BKTree object.
 
         metric is a callable that takes two arguments. The callable must
@@ -77,7 +78,24 @@ class BKTree(object):
         """
         assert callable(metric), "The metric provided is not callable."
         self.metric = metric
-        if initial:
-            for item in initial:
-                # TODO implement this
-                pass
+        self.value = None
+        self.leaves = {}
+        if len(args) > 0:
+            iterator = iter(args)
+            self.value = next(iterator)
+            for item in iterator:
+                self.add(item)
+
+    def add(self, item):
+        if self.value is None:
+            self.value = item
+        else:
+            distance = self.metric(self.value, item)
+            print("Distance from '{}' to '{}' is {}".format(self.value, item, distance))
+            try:
+                leaf = self.leaves[distance]
+            except KeyError:
+                self.leaves[distance] = BKTree(self.metric, item)
+            else:
+                leaf.add(item)
+
