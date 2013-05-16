@@ -2,6 +2,7 @@ from math import sqrt, fsum
 from math import pow as fpow
 from itertools import starmap, repeat
 from operator import sub
+from collections import deque
 
 def euclidian(p, q):
     """Compute the euclidian distance between two tuples of numbers.
@@ -74,7 +75,7 @@ class BKTree(object):
         distance function. The euclidian and levenshtein functions in
         the bktree module are examples of metric functions.
 
-        initial is an iterable of objects to initialize the tree with.
+        Arguments given after metric will be added to the tree.
         """
         assert callable(metric), "The metric provided is not callable."
         self.metric = metric
