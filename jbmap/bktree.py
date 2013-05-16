@@ -98,3 +98,22 @@ class BKTree(object):
             else:
                 leaf.add(item)
 
+    def search(self, query, max_distance):
+        """Returns an iterator of matching items.
+
+        query is the item to search for/against.
+
+        max_distance is the maximum distance a returned item can be from
+        query.
+        """
+        distance = self.metric(self.value, query)
+        if distance <= max_distance:
+            yield self.value
+        between = lambda d: (d <= (max_distance + distance) and
+                                     d >= (max_distance - distance))
+        for key in filter(between, self.leaves.keys()):
+            # yield from was added in Python 3.3
+            # yield from self.leaves[key].search(query, max_distance)
+            for result in self.leaves[key].search(query, max_distance):
+                yield result
+
