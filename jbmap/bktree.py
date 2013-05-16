@@ -67,6 +67,7 @@ class BKTree(object):
 
         initial is an iterable of objects to initialize the tree with.
         """
+        assert callable(metric), "The metric provided is not callable."
         self.metric = metric
         if initial:
             for item in initial:
