@@ -4,7 +4,7 @@ from itertools import starmap
 from operator import sub
 
 def euclidian_distance(p, q):
-    """compute the euclidian distance between two tuples of numbers.
+    """Compute the euclidian distance between two tuples of numbers.
 
     The tuples must be of the same length, and should both be numbers.
     """
