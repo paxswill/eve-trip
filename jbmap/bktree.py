@@ -39,6 +39,13 @@ def levenshtein(p, q):
     # TODO Optimize for space by not storing the entire distance matrix, only
     # the parts used.
 
+    # Optimize some simple cases out
+    if p == q:
+        return 0
+    if not p:
+        return len(q)
+    if not q:
+        return len(p)
     # Create a |p|+1 by |q|+1 matrix initialized to zeros
     distance = [[0 for x in range(len(q) + 1)] for x in range(len(p) + 1)]
     # Empty string to the substring is equal to the length of the substring
