@@ -94,6 +94,29 @@ class BKTree(object):
             for item in iterator:
                 self.add(item)
 
+    def __bool__(self):
+        """Return True if there are >=1 items in the tree."""
+        if self.value is not None:
+            return True
+        else:
+            for leaf in self.leaves.values():
+                if leaf:
+                    return True
+        return False
+
+    def __contains__(self, item):
+        """Check membership of an item in the tree.
+
+        Equivalent to calling tree.search(item, 0)
+        """
+        results = self.search(item, 0)
+        try:
+            next(results)
+        except StopIteration:
+            return False
+        else:
+            return True
+
     def __len__(self):
         """Return the number of values in the tree.
 
@@ -136,6 +159,8 @@ class BKTree(object):
             node = queue.popleft()
             yield node
             queue.append(node.leaves.values())
+
+    __iter__ = walk_preorder
 
     def add(self, value):
         """Add a value to the Tree.
