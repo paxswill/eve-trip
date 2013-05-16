@@ -94,6 +94,19 @@ class BKTree(object):
             for item in iterator:
                 self.add(item)
 
+    def __len__(self):
+        """Return the number of values in the tree.
+
+        Note: This is currently an ineffcient operation. If all you need to do
+        is check if the tree is empty, use truth value testing.
+        """
+        if self.value is not None:
+            length = 1
+        else:
+            length = 0
+        for leaf in self.leaves.values():
+            length += len(leaf)
+        return length
 
     def walk_preorder(self):
         """Return an iterator to traverse the tree in depth-first, pre-order.
