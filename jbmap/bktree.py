@@ -3,7 +3,7 @@ from math import pow as fpow
 from itertools import starmap, repeat
 from operator import sub
 
-def euclidian_distance(p, q):
+def euclidian(p, q):
     """Compute the euclidian distance between two tuples of numbers.
 
     The tuples must be of the same length, and should both be numbers.
@@ -70,7 +70,7 @@ class BKTree(object):
 
         metric is a callable that takes two arguments. The callable must
         satisfy the definition of a metric (in the mathematical sense; ie a
-        distance function. The euclidian_distance and levenshtein functions in
+        distance function. The euclidian and levenshtein functions in
         the bktree module are examples of metric functions.
 
         initial is an iterable of objects to initialize the tree with.
