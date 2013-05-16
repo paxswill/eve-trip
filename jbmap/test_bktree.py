@@ -3,28 +3,19 @@ from jbmap import bktree
 
 class TestMetric(unittest.TestCase):
 
-    def assertTriangleInequality(self, a, b, c):
+    def assertTriangleInequality(self, metric, a, b, c):
         # Identity
-        self.assertAlmostEqual(bktree.euclidian(a, a), 0.0)
-        self.assertAlmostEqual(bktree.euclidian(b, b), 0.0)
-        self.assertAlmostEqual(bktree.euclidian(c, c), 0.0)
+        self.assertAlmostEqual(metric(a, a), 0.0)
+        self.assertAlmostEqual(metric(b, b), 0.0)
+        self.assertAlmostEqual(metric(c, c), 0.0)
         # Reversal
-        self.assertAlmostEqual(bktree.euclidian(a, b),
-                               bktree.euclidian(b, a))
-        self.assertAlmostEqual(bktree.euclidian(a, c),
-                               bktree.euclidian(c, a))
-        self.assertAlmostEqual(bktree.euclidian(c, b),
-                               bktree.euclidian(b, c))
+        self.assertAlmostEqual(metric(a, b), metric(b, a))
+        self.assertAlmostEqual(metric(a, c), metric(c, a))
+        self.assertAlmostEqual(metric(c, b), metric(b, c))
         # Combination
-        self.assertGreaterEqual(bktree.euclidian(a, b) +
-                                bktree.euclidian(b, c),
-                                bktree.euclidian(a, c))
-        self.assertGreaterEqual(bktree.euclidian(a, c) +
-                                bktree.euclidian(c, b),
-                                bktree.euclidian(a, b))
-        self.assertGreaterEqual(bktree.euclidian(a, c) +
-                                bktree.euclidian(a, b),
-                                bktree.euclidian(c, b))
+        self.assertGreaterEqual(metric(a, b) + metric(b, c), metric(a, c))
+        self.assertGreaterEqual(metric(a, c) + metric(c, b), metric(a, b))
+        self.assertGreaterEqual(metric(a, c) + metric(a, b), metric(c, b))
 
 
 class TestEuclidian(TestMetric):
@@ -49,7 +40,7 @@ class TestEuclidian(TestMetric):
         a = (1, 2, 3)
         b = (4, 5, 6)
         c = (7, 8, 9)
-        self.assertTriangleInequality(a, b, c)
+        self.assertTriangleInequality(bktree.euclidian, a, b, c)
 
 
 class TestLevenshtein(unittest.TestCase):
