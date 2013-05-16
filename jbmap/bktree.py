@@ -91,7 +91,6 @@ class BKTree(object):
             self.value = item
         else:
             distance = self.metric(self.value, item)
-            print("Distance from '{}' to '{}' is {}".format(self.value, item, distance))
             try:
                 leaf = self.leaves[distance]
             except KeyError:
