@@ -1,6 +1,6 @@
 from math import sqrt, fsum
 from math import pow as fpow
-from itertools import starmap
+from itertools import starmap, repeat
 from operator import sub
 
 def euclidian_distance(p, q):
@@ -24,6 +24,36 @@ def euclidian_distance(p, q):
     sum_coordinates = fsum(starmap(sub, coordinate_pairs))
     # Square root the sum_coordinates and return 
     return sqrt(sum_coordinates)
+
+
+def levenshtein(p, q):
+    """Compute the Levenshtein distance between two strings.
+    """
+    # This is based on the pseudocode on the Wikipedia article "Levenshtein
+    # Distance", which is sourced from the article "The String-to-string
+    # correction problem" by Robert A. Wagner and Michael J. Fischer.
+
+    # Create a |p|+1 by |q|+1 matrix initialized to zeros
+    distance = list(repeat(list(repeat(0, len(q) + 1)), len(p) + 1))
+    # Empty string to the substring is equal to the length of the substring
+    for index_p in range(1, len(p) + 1):
+        distance[index_p][0] = index_p
+    for index_q in range(1, len(q) + 1):
+        distance[0][index_q] = index_q
+    # Magic!
+    for index_p, char_p in enumerate(1, p):
+        for index_q, char_q in enumerate(1, q):
+            # If the characters are equal, the distance is the same as the
+            # previous value
+            if char_p == char_q:
+                distance[index_p][index_q] = distance[index_p - 1][index_q - 1]
+            else:
+                deletion = distance[index_p - 1][index_j] + 1
+                insertion = distance[index_p, index_q - 1] + 1
+                substitution = distance[index_p - 1][index_1 - 1] + 1
+                distance[index_p][index_q] = min(deletion, insertion,
+                        substitution)
+    return distance[-1][-1]
 
 
 class BKTree(object):
