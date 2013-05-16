@@ -136,18 +136,67 @@ class BKTree(object):
 
         If the given value is already in the tree, it is ignored.
         """
-        if self.value is None:
+        if self.value is None and not self.leaves:
             self.value = value
         elif self.value == value:
-            return
+            # An intentional pass, adding an item already there is a no-op
+            pass
         else:
             distance = self.metric(self.value, value)
-            try:
-                leaf = self.leaves[distance]
-            except KeyError:
-                self.leaves[distance] = BKTree(self.metric, value)
+            if distance == 0:
+                # Adding a previously deleted item back
+                self.value = value
             else:
-                leaf.add(value)
+                # try to get the subtree for this distance
+                try:
+                    leaf = self.leaves[distance]
+                except KeyError:
+                    # Create non-existant subtrees
+                    self.leaves[distance] = BKTree(self.metric, value)
+                else:
+                    leaf.add(value)
+
+    def clear(self):
+        """Remove all values form the tree."""
+        # Let the garbage collector clean it up
+        self.value = None
+        self.leaves = {}
+
+    def discard(self, value):
+        """Removes a value from the tree if it  is present."""
+        try:
+            self.remove(value)
+        except KeyError:
+            pass
+
+    def pop(self):
+        if self.leaves:
+            # Get an arbitrary key
+            key = next(iter(self.leaves))
+            self.leaves[key].pop()
+            # If the pop operation caused that subtree to be empty, remove it
+            if not self.leaves[key]:
+                del self.leaves[key]
+        elif self.value:
+            self.value = None
+        else:
+            raise KeyError("The tree is empty.")
+
+    def remove(self, value):
+        """Remove a value from the tree. Raises KeyError if it is not present.
+        """
+        if value == self.value:
+            self.value = None
+        else:
+            distance = self.metric(self.value, value)
+            if distance in self.leaves:
+                self.leaves[distance].remove(value)
+                # Remove completely empty subtrees
+                if not self.leaves[distance]:
+                    del self.leaves[distance]
+            else:
+                raise KeyError("'{}' is not contained within the
+                        tree.".format(value))
 
     def search(self, query, max_distance):
         """Returns an iterator of matching items.
