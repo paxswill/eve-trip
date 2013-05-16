@@ -167,20 +167,26 @@ class BKTree(object):
         try:
             self.remove(value)
         except KeyError:
+            # Intentional pass, this is catching the KeyError from remove
             pass
 
     def pop(self):
+        """Remove and return an arbitrary value from the tree. Raises KeyError
+        if the tree is empty.
+        """
         if self.leaves:
             # Get an arbitrary key
             key = next(iter(self.leaves))
-            self.leaves[key].pop()
+            popped = self.leaves[key].pop()
             # If the pop operation caused that subtree to be empty, remove it
             if not self.leaves[key]:
                 del self.leaves[key]
         elif self.value:
+            popped = self.value
             self.value = None
         else:
             raise KeyError("The tree is empty.")
+        return popped
 
     def remove(self, value):
         """Remove a value from the tree. Raises KeyError if it is not present.
