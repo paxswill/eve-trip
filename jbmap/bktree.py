@@ -94,17 +94,23 @@ class BKTree(object):
             for item in iterator:
                 self.add(item)
 
-    def add(self, item):
+    def add(self, value):
+        """Add a value to the Tree.
+
+        If the given value is already in the tree, it is ignored.
+        """
         if self.value is None:
-            self.value = item
+            self.value = value
+        elif self.value == value:
+            return
         else:
-            distance = self.metric(self.value, item)
+            distance = self.metric(self.value, value)
             try:
                 leaf = self.leaves[distance]
             except KeyError:
-                self.leaves[distance] = BKTree(self.metric, item)
+                self.leaves[distance] = BKTree(self.metric, value)
             else:
-                leaf.add(item)
+                leaf.add(value)
 
     def search(self, query, max_distance):
         """Returns an iterator of matching items.
