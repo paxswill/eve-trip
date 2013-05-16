@@ -17,12 +17,14 @@ def euclidian_distance(p, q):
     # of the i-th element of p an q. It's prep for doing the subtraction and
     # summation later.
     coordinate_pairs = zip(p, q)
-    # starmap is a variation on the standard map function. It feeds the tuples
-    # form coordinate_pairs to the sub function (a function form of the
-    # standard '-' operator). The output is then summed together with special
-    # care taken to handling floating point values.
-    sum_coordinates = fsum(starmap(sub, coordinate_pairs))
-    # Square root the sum_coordinates and return 
+    # differences is an iterable of the difference between the items of each
+    # item in coordinate_pairs
+    differences = starmap(sub, coordinate_pairs)
+    # raise differences to the second power (square them)
+    raised_differences = map(lambda x: fpow(x, 2), differences)
+    # Sum raised_differences in preparation for...
+    sum_coordinates = fsum(raised_differences)
+    # ...finding the square root and returning.
     return sqrt(sum_coordinates)
 
 
