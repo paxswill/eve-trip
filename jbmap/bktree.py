@@ -39,23 +39,23 @@ def levenshtein(p, q):
     # the parts used.
 
     # Create a |p|+1 by |q|+1 matrix initialized to zeros
-    distance = list(repeat(list(repeat(0, len(q) + 1)), len(p) + 1))
+    distance = [[0 for x in range(len(q) + 1)] for x in range(len(p) + 1)]
     # Empty string to the substring is equal to the length of the substring
     for index_p in range(1, len(p) + 1):
         distance[index_p][0] = index_p
     for index_q in range(1, len(q) + 1):
         distance[0][index_q] = index_q
     # Magic!
-    for index_p, char_p in enumerate(1, p):
-        for index_q, char_q in enumerate(1, q):
+    for index_p, char_p in enumerate(p, 1):
+        for index_q, char_q in enumerate(q, 1):
             # If the characters are equal, the distance is the same as the
             # previous value
             if char_p == char_q:
                 distance[index_p][index_q] = distance[index_p - 1][index_q - 1]
             else:
-                deletion = distance[index_p - 1][index_j] + 1
-                insertion = distance[index_p, index_q - 1] + 1
-                substitution = distance[index_p - 1][index_1 - 1] + 1
+                deletion = distance[index_p - 1][index_q] + 1
+                insertion = distance[index_p][index_q - 1] + 1
+                substitution = distance[index_p - 1][index_q - 1] + 1
                 distance[index_p][index_q] = min(deletion, insertion,
                         substitution)
     return distance[-1][-1]

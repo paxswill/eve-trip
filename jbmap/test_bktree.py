@@ -52,5 +52,17 @@ class TestEuclidian(TestMetric):
         self.assertTriangleInequality(a, b, c)
 
 
+class TestLevenshtein(unittest.TestCase):
+
+    def test_identity(self):
+        self.assertEqual(bktree.levenshtein('kitten', 'kitten'), 0)
+        self.assertEqual(bktree.levenshtein('sitting', 'sitting'), 0)
+
+    def test_substring(self):
+        self.assertEqual(bktree.levenshtein('kitten', 'kittens'), 1)
+        self.assertEqual(bktree.levenshtein('cat', 'catch'), 2)
+        self.assertEqual(bktree.levenshtein('finding', 'fin'), 4)
+
+
 if __name__ == '__main__':
     unittest.main()
