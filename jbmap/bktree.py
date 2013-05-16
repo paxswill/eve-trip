@@ -33,6 +33,9 @@ def levenshtein(p, q):
     # Distance", which is sourced from the article "The String-to-string
     # correction problem" by Robert A. Wagner and Michael J. Fischer.
 
+    # TODO Optimize for space by not storing the entire distance matrix, only
+    # the parts used.
+
     # Create a |p|+1 by |q|+1 matrix initialized to zeros
     distance = list(repeat(list(repeat(0, len(q) + 1)), len(p) + 1))
     # Empty string to the substring is equal to the length of the substring
@@ -54,6 +57,9 @@ def levenshtein(p, q):
                 distance[index_p][index_q] = min(deletion, insertion,
                         substitution)
     return distance[-1][-1]
+
+
+# TODO Add a Damerau-Levenshtein distance function
 
 
 class BKTree(object):
